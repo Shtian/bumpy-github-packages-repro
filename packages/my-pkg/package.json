@@ -1,0 +1,13 @@
+{
+  "name": "@shtian/my-pkg",
+  "version": "1.0.0",
+  "description": "Repro package published to GitHub Packages",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shtian/bumpy-github-packages-repro.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
+}

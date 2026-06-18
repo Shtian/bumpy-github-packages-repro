@@ -1,0 +1,7 @@
+{
+  "changelog": "github",
+  "access": "restricted",
+  "packages": {
+    "@shtian/my-pkg": { "registry": "https://npm.pkg.github.com/" }
+  }
+}
