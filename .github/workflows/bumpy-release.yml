@@ -1,0 +1,49 @@
+name: Bumpy Release
+
+# Two-phase release flow:
+#  1. Push to main WITH pending bump files  -> mode "version-pr": opens/updates
+#     the "Version Packages" PR (which applies the bumps + deletes bump files).
+#  2. Merge that PR (push to main, no bump files left, versions changed)
+#     -> mode "publish": publishes to the configured registry (GitHub Packages)
+#        and creates the GitHub release.
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: bumpy-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push version commit + tags, create release
+      pull-requests: write # open/update the Version Packages PR
+      packages: write # publish to GitHub Packages
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # bumpy needs full history + tags
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm install
+
+      # Auth npm to GitHub Packages for the @shtian scope.
+      # GITHUB_TOKEN has packages:write via the permissions block above.
+      - name: Configure GitHub Packages auth
+        run: |
+          {
+            echo "@shtian:registry=https://npm.pkg.github.com/"
+            echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
+          } > .npmrc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: npx @varlock/bumpy ci release
+        env:
+          GH_TOKEN: ${{ github.token }}
