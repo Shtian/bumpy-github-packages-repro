@@ -1,6 +1,6 @@
 {
   "name": "@shtian/my-pkg",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Repro package published to GitHub Packages",
   "license": "MIT",
   "repository": {
