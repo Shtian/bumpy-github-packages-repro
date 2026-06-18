@@ -1,6 +1,12 @@
 # Changelog
 
 
+
+## 1.3.0
+<sub>2026-06-18</sub>
+
+-  *(minor)* - demonstrate full CI release flow
+
 ## 1.2.0
 <sub>2026-06-18</sub>
 
